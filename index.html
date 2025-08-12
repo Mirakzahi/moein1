@@ -4,37 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>معین وی پی ان- سرویس VPN حرفه‌ای و رایگان</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'vazir': ['Vazirmatn', 'Tahoma', 'Arial', 'sans-serif']
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-out',
-                        'slide-up': 'slideUp 0.6s ease-out forwards',
-                        'pulse-fast': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'gradient-bg': 'gradient-bg 15s ease infinite',
-                    },
-                    keyframes: {
-                        fadeIn: { 'from': { opacity: 0 }, 'to': { opacity: 1 } },
-                        slideUp: {
-                            'from': { transform: 'translateY(30px)', opacity: 0 },
-                            'to': { transform: 'translateY(0)', opacity: 1 }
-                        },
-                        'gradient-bg': {
-                            '0%, 100%': { 'background-position': '0% 50%' },
-                            '50%': { 'background-position': '100% 50%' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
@@ -46,732 +16,98 @@
             animation: gradient-bg 15s ease infinite;
             color: white;
         }
+        @keyframes gradient-bg {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            text-align: center;
+        }
+        .header {
+            padding: 50px 20px;
+        }
+        .header h1 {
+            font-size: 3rem;
+            margin: 0;
+        }
+        .header p {
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
         .card-glass {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
         .card-glass:hover {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             transform: translateY(-5px);
         }
-        .status-online {
-            background: #10b981;
-            box-shadow: 0 0 12px rgba(16, 185, 129, 0.8);
-            animation: pulse-fast 2s infinite;
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
-        .ripple { position: relative; overflow: hidden; }
-        .ripple::before {
-            content: ''; position: absolute; top: 50%; left: 50%;
-            width: 0; height: 0; border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%); transition: width 0.6s, height 0.6s;
+        .contact a, .footer a {
+            color: #4a90e2;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
         }
-        .ripple:active::before { width: 300px; height: 300px; }
-        .timeline-item::before {
-            content: '';
-            background: rgba(255,255,255,0.2);
-            width: 3px;
-            height: 100%;
-            position: absolute;
-            right: 1.1rem;
-            top: 1.5rem;
-            z-index: 1;
-        }
-        .timeline-container > div:last-child .timeline-item::before {
-            display: none;
-        }
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-in-out;
-        }
-        .animated-section {
-            opacity: 0;
-        }
-        /* Custom scrollbar for config list */
-        .config-list::-webkit-scrollbar {
-            width: 8px;
-        }
-        .config-list::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-        }
-        .config-list::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.2);
-            border-radius: 10px;
-        }
-        .config-list::-webkit-scrollbar-thumb:hover {
-            background: rgba(255,255,255,0.3);
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
-<body class="min-h-screen text-gray-200">
+<body>
 
-    <div id="welcomeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
-        <div class="bg-white rounded-3xl p-8 max-w-md w-full mx-4 animate-slide-up shadow-2xl border text-gray-900">
-            <div class="text-center">
-                <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <span class="text-3xl">🎉</span>
-                </div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">به سرویس معین vpn خوش آمدی!</h2>
-                <p class="text-gray-600 mb-6 leading-relaxed">
-                    اتی دروازه ی ورود به اینترنت آزادن.
-                </p>
-                <button onclick="closeWelcome()" class="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-3 rounded-xl font-semibold ripple transition-all shadow-lg hover:shadow-xl">
-                    بزن بریم!
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <div id="adminPanelLogin" class="fixed inset-0 bg-black bg-opacity-75 backdrop-blur-md flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-3xl p-8 max-w-md w-full mx-4 animate-slide-up shadow-2xl border text-gray-900">
-            <div class="text-center">
-                <h2 class="text-2xl font-bold mb-4">ورود به پنل مدیریت</h2>
-                <p class="text-sm text-gray-600 mb-6">رمز عبور مدیریتی را وارد کنید.</p>
-                <input type="password" id="adminPassword" placeholder="رمز عبور" class="w-full bg-gray-200 rounded-xl p-3 mb-4 text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <button onclick="loginAdmin()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-semibold ripple transition-all shadow-lg hover:shadow-xl">
-                    ورود
-                </button>
-            </div>
-        </div>
-    </div>
+    <div class="container">
+        <header class="header">
+            <h1>معین vpn</h1>
+            <p>سرویس VPN حرفه‌ای و رایگان</p>
+        </header>
 
-    <div id="adminPanelContent" class="hidden fixed inset-0 bg-black bg-opacity-75 backdrop-blur-md overflow-y-auto z-50 p-4 animate-fade-in">
-        <div class="card-glass rounded-3xl p-8 max-w-xl w-full mx-auto my-10">
-            <h2 class="text-3xl font-bold mb-6 text-center text-white">پنل مدیریت کانفیگ‌ها</h2>
-            <div id="adminConfigForm" class="space-y-4">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-bold text-gray-200">کانفیگ‌های اختصاصی</h3>
-                    <button onclick="logoutAdmin()" class="bg-red-500 text-white px-4 py-2 rounded-xl text-sm font-bold">خروج</button>
-                </div>
-                <div class="card-glass p-4 rounded-xl text-center">
-                    <button onclick="addConfigField()" class="bg-blue-500 text-white px-4 py-2 rounded-xl text-sm font-bold">
-                        <i class="fa-solid fa-plus ml-2"></i>افزودن کانفیگ جدید
-                    </button>
-                </div>
-            </div>
-            <div class="text-center mt-8">
-                <button onclick="saveConfigs()" class="bg-green-500 hover:bg-green-600 text-white py-3 px-8 rounded-xl font-bold text-lg ripple transition-all shadow-lg hover:shadow-xl">
-                    ذخیره تغییرات
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <header class="py-20 relative overflow-hidden">
-        <div class="container mx-auto px-4 relative z-10">
-            <div class="text-center animate-fade-in">
-                <div class="flex items-center justify-center mb-10">
-                    <div class="card-glass rounded-3xl flex items-center justify-center w-24 h-24 ml-6 shadow-2xl">
-                        <span class="text-4xl text-white">🚀</span>
-                    </div>
-                    <div>
-                        <h1 class="text-5xl md:text-6xl font-black mb-3 text-white">معین vpn </h1>
-                        <p class="text-blue-200 text-lg md:text-xl font-medium">سرویس VPN حرفه‌ای و رایگان</p>
-                    </div>
-                </div>
-                
-                <div class="card-glass rounded-3xl p-6 md:p-8 inline-block shadow-2xl mb-6">
-                    <div class="grid grid-cols-3 gap-4 md:gap-8">
-                        <div class="text-center">
-                            <div class="flex items-center justify-center mb-3">
-                                <div class="w-3 h-3 status-online rounded-full ml-2"></div>
-                                <div class="font-bold text-lg text-gray-100">وضعیت</div>
-                            </div>
-                            <div class="text-blue-200 text-sm font-mono">آپتایم: <span id="uptime" class="font-semibold">--</span>%</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="font-bold text-2xl mb-1 text-white" id="activeServers">24</div>
-                            <div class="text-blue-200 text-sm">سرورون فعال</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="font-bold text-2xl mb-1 text-white" id="serverPing">--</div>
-                            <div class="text-blue-200 text-sm">پینگ</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-glass rounded-3xl p-6 md:p-8 inline-block shadow-2xl max-w-2xl w-full">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                        <div class="flex flex-col items-center">
-                            <i class="fa-solid fa-wifi text-blue-300 text-2xl mb-3"></i>
-                            <h3 class="text-gray-300 text-sm font-bold mb-1">آدرس IP شما</h3>
-                            <p id="user-ip" class="font-mono text-white font-semibold animate-pulse">در حال بارگذارین...</p>
-                        </div>
-                        <div class="flex flex-col items-center">
-                            <i class="fa-solid fa-location-dot text-green-300 text-2xl mb-3"></i>
-                            <h3 class="text-gray-300 text-sm font-bold mb-1">موقعیت مکانی</h3>
-                            <p id="user-location" class="font-mono text-white font-semibold animate-pulse">در حال بارگذارین...</p>
-                        </div>
-                        <div class="flex flex-col items-center">
-                            <i class="fa-solid fa-building text-purple-300 text-2xl mb-3"></i>
-                            <h3 class="text-gray-300 text-sm font-bold mb-1">سرویس‌دهنده</h3>
-                            <p id="user-isp" class="font-mono text-white font-semibold animate-pulse">در حال بارگذارین...</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <div class="space-y-16 md:space-y-24 pb-16">
-
-        <section class="animated-section container mx-auto px-4">
-            <div class="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto">
-                <a href="https://wa.me/+989307916368" target="_blank" class="card-glass rounded-2xl p-6 flex items-center space-x-4 space-x-reverse group">
-                    <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-lime-600 rounded-full flex items-center justify-center text-3xl text-white shadow-lg transition-transform group-hover:scale-110">
-                        <i class="fa-brands fa-whatsapp"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-xl text-white">پشتیبانی واتساپ</h3>
-                        <p class="text-gray-300">ارتباط مستقیم و پشتیبانی</p>
-                    </div>
-                </a>
-                <a href="https://www.instagram.com/mirakzahi/" target="_blank" class="card-glass rounded-2xl p-6 flex items-center space-x-4 space-x-reverse group">
-                    <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-3xl text-white shadow-lg transition-transform group-hover:scale-110">
-                        <i class="fa-brands fa-instagram"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-xl text-white">اینستاگرام</h3>
-                        <p class="text-gray-300">کانالی برای شما عزیزان</p>
-                    </div>
-                </a>
-            </div>
+        <section class="card-glass">
+            <h2>لینک اشتراک</h2>
+            <p>از لینک زیر برای دریافت کانفیگ‌ها استفاده کنید.</p>
+            <a href="#" class="btn">دریافت لینک</a>
         </section>
 
-        <section class="relative z-20 container mx-auto px-4">
-            <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                <a href="#sublink" class="card-glass rounded-3xl p-6 text-center ripple group">
-                    <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg transition-transform group-hover:scale-110">
-                        <i class="fa-solid fa-link text-3xl text-white"></i>
-                    </div>
-                    <h3 class="font-bold text-xl mb-2 text-white">لینک اشتراک</h3>
-                    <p class="text-gray-300 text-sm">همه سرورون داخل همی لینکن</p>
-                </a>
-                <a href="#exclusive-sub" class="card-glass rounded-3xl p-6 text-center ripple group">
-                    <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg transition-transform group-hover:scale-110">
-                        <i class="fa-solid fa-rss text-3xl text-white"></i>
-                    </div>
-                    <h3 class="font-bold text-xl mb-2 text-white">اشتراک اختصاصی</h3>
-                    <p class="text-gray-300 text-sm">کانفیگ‌های مخصوص نت شخصی</p>
-                </a>
-                <a href="#daily-config" class="card-glass rounded-3xl p-6 text-center ripple group">
-                    <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg transition-transform group-hover:scale-110">
-                        <i class="fa-solid fa-star text-3xl text-white"></i>
-                    </div>
-                    <h3 class="font-bold text-xl mb-2 text-white">کانفیگ روز</h3>
-                    <p class="text-gray-300 text-sm">هر روز یک کانفیگ قوی</p>
-                </a>
-            </div>
+        <section class="card-glass">
+            <h2>اشتراک اختصاصی</h2>
+            <p>برای دسترسی به کانفیگ‌های مخصوص، شماره تماس خود را وارد کنید.</p>
+            <input type="text" placeholder="مثال: 09121234567" style="width: 80%; padding: 10px; border-radius: 5px; border: none; background-color: rgba(0,0,0,0.2); color: white; text-align: center;">
+            <a href="#" class="btn">بررسی اشتراک</a>
         </section>
 
-        <section id="sublink" class="animated-section container mx-auto px-4">
-            <div class="card-glass rounded-3xl shadow-2xl p-8 max-w-4xl mx-auto text-center">
-                <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <i class="fa-solid fa-link text-3xl text-white"></i>
-                </div>
-                <h2 class="text-3xl font-bold mb-4 text-white">
-                    لینک اشتراک (Subscription)
-                </h2>
-                <p class="text-gray-300 text-lg mb-6">یه لینک داخل فیلترشکن خو وارد کنیی تا کانفیگ ون بصورت خوردکار بالا بیان. </p>
-                <div class="bg-black bg-opacity-20 rounded-xl p-4 mb-6 shadow-inner relative z-10">
-                    <p id="subLink" class="font-mono text-center text-white font-bold text-sm md:text-lg break-all"></p>
-                </div>
-                <button onclick="copySubLink()" class="bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white px-8 py-4 rounded-xl font-bold text-lg ripple transition-all shadow-lg hover:shadow-xl">
-                    <i class="fa-solid fa-copy ml-2"></i>
-            اطی بزن لینک کپی ابو
-                </button>
-            </div>
-        </section>
-
-        <section id="exclusive-sub" class="animated-section container mx-auto px-4">
-            <div class="card-glass rounded-3xl shadow-2xl p-8 max-w-4xl mx-auto text-center">
-                <div class="w-20 h-20 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <i class="fa-solid fa-rss text-3xl text-white"></i>
-                </div>
-                <h2 class="text-3xl font-bold mb-4 text-white">
-                    اشتراک اختصاصی (نت شخصی)
-                </h2>
-                <p class="text-gray-300 text-lg mb-6">برای دسترسی به کانفیگ‌های اختصاصی، شماره تماس خود را وارد کنید.</p>
-                
-                <div class="flex flex-col items-center">
-                    <input type="text" id="phoneInput" placeholder="مثال: 09121234567" class="w-full md:w-96 bg-black bg-opacity-20 rounded-xl p-4 mb-4 text-center text-white font-mono placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition">
-                    <button onclick="checkSubscription()" class="w-full md:w-96 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white px-8 py-4 rounded-xl font-bold text-lg ripple transition-all shadow-lg hover:shadow-xl">
-                        بررسی اشتراک
-                    </button>
-                </div>
-
-                <div id="exclusiveConfigResult" class="mt-8 text-center hidden">
-                    </div>
-            </div>
+        <section class="card-glass">
+            <h2>کانفیگ روز</h2>
+            <p>هر روز یک کانفیگ قوی و جدید به صورت رایگان دریافت کنید.</p>
+            <a href="#" class="btn">دریافت لینک</a>
         </section>
         
-        <section id="daily-config" class="animated-section container mx-auto px-4">
-            <div class="card-glass rounded-3xl shadow-2xl p-8 max-w-4xl mx-auto text-center">
-                <div class="w-20 h-20 bg-gradient-to-br from-red-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <i class="fa-solid fa-star text-3xl text-white"></i>
-                </div>
-                <h2 class="text-3xl font-bold mb-4 text-white">
-                    کانفیگ روز
-                </h2>
-                <p class="text-gray-300 text-lg mb-6">هر روز یک کانفیگ قوی و جدید به صورت رایگان دریافت کنید.</p>
-                <button onclick="copyDailyConfig()" class="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-8 py-4 rounded-xl font-bold text-lg ripple transition-all shadow-lg hover:shadow-xl">
-                    <i class="fa-solid fa-copy ml-2"></i>
-                    دریافت لینک
-                </button>
+        <footer class="footer">
+            <div class="contact">
+                <a href="https://wa.me/+989307916368" target="_blank"><i class="fa-brands fa-whatsapp"></i> واتساپ</a>
+                <a href="https://www.instagram.com/mirakzahi/" target="_blank"><i class="fa-brands fa-instagram"></i> اینستاگرام</a>
             </div>
-        </section>
-
-        <section id="notifications" class="animated-section container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold mb-4 text-white">
-                    آخرین اخبار و اطلاعیه‌ ون
-                </h2>
-                <p class="text-gray-300 text-lg">همیشه ای آخرین تغییرات مطلع بح .</p>
-            </div>
-            <div class="max-w-3xl mx-auto timeline-container">
-                <div>
-                    <div class="timeline-item relative flex items-start space-x-6 space-x-reverse pb-8">
-                        <div class="flex-shrink-0 z-10">
-                            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 text-white shadow-md">
-                                <i class="fa-solid fa-cloud"></i>
-                            </span>
-                        </div>
-                        <div class="card-glass p-6 rounded-2xl w-full">
-                            <div class="flex items-center justify-between mb-2">
-                                <h3 class="font-bold text-lg text-blue-300"> برای اندروید هدیفای بهترن</h3>
-                                <span class="text-xs text-gray-400 font-medium">امروز</span>
-                            </div>
-                            <p class="text-gray-300"> اگر اندروید داری ای قسمت کلاینت ون نرم افزار هیدیفای دانلود کن بعد بزن رو به اضافه داخل برنامه و بالا سمت چپ احتمالا ببو بعد برن رو اتصال .</p>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="timeline-item relative flex items-start space-x-6 space-x-reverse pb-8">
-                        <div class="flex-shrink-0 z-10">
-                            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-green-500 text-white shadow-md">
-                                <i class="fa-solid fa-gamepad"></i>
-                            </span>
-                        </div>
-                        <div class="card-glass p-6 rounded-2xl w-full">
-                            <div class="flex items-center justify-between mb-2">
-                                <h3 class="font-bold text-lg text-green-300">۶ سرور نیم‌بها که اطور بال اکنن</h3>
-                                <span class="bg-yellow-200 text-yellow-800 text-xs font-bold px-2.5 py-1 rounded-full">ویژه</span>
-                            </div>
-                            <p class="text-gray-300"> اگر سرور اختصاصی نیم بها تون خواست قسمت پشتیبانی ورشم پیام بدهیی.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="download" class="animated-section container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold mb-4 text-white">
-                    دانلود کلاینت‌ ون
-                </h2>
-                <p class="text-gray-300 text-lg">نرم افزارون مورد نیاز برای اتصال</p>
-            </div>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-                <a href="https://github.com/2dust/v2rayNG/releases" target="_blank" class="card-glass rounded-2xl p-6 group text-center">
-                    <i class="fa-brands fa-android text-5xl text-green-400 mb-4"></i>
-                    <h3 class="font-bold text-xl text-white">اندروید</h3>
-                    <p class="text-green-300 font-semibold mt-2">V2RayNG</p>
-                </a>
-                <a href="https://apps.apple.com/app/streisand/id6450534064" target="_blank" class="card-glass rounded-2xl p-6 group text-center">
-                    <i class="fa-brands fa-apple text-5xl text-gray-300 mb-4"></i>
-                    <h3 class="font-bold text-xl text-white">iOS</h3>
-                    <p class="text-gray-200 font-semibold mt-2">Streisand</p>
-                </a>
-                <a href="https://github.com/2dust/v2rayN/releases" target="_blank" class="card-glass rounded-2xl p-6 group text-center">
-                    <i class="fa-brands fa-windows text-5xl text-blue-400 mb-4"></i>
-                    <h3 class="font-xl font-bold text-white">ویندوز</h3>
-                    <p class="text-blue-300 font-semibold mt-2">v2rayN</p>
-                </a>
-                <a href="https://github.com/hiddify/hiddify-next/releases" target="_blank" class="card-glass rounded-2xl p-6 group text-center">
-                    <i class="fa-brands fa-apple text-5xl text-gray-400 mb-4"></i>
-                    <h3 class="font-xl font-bold text-white">macOS</h3>
-                    <p class="text-gray-300 font-semibold mt-2">Hiddify Next</p>
-                </a>
-            </div>
-        </section>
-
-        <section id="tutorial" class="animated-section container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold mb-4 text-white">
-                    راهنمای اتصال تو ۴ مرحله
-                </h2>
-                <p class="text-gray-300 text-lg">به سادگی و تو چند دقیقه به اینترنت آزاد متصل بح</p>
-            </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 text-center text-white">
-                <div class="flex flex-col items-center">
-                    <div class="flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-emerald-400 to-green-500 text-white text-4xl font-bold shadow-lg mb-4">1</div>
-                    <h3 class="text-xl font-bold mb-2">کپی لینک</h3>
-                    <p class="text-gray-300">
-                        اول به <a href="#sublink" class="text-blue-400 font-semibold hover:underline">بخش لینک اشتراک</a> بره و لینک  کپی کن
-                    </p>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 text-white text-4xl font-bold shadow-lg mb-4">2</div>
-                    <h3 class="text-xl font-bold mb-2">نصب کلاینت</h3>
-                    <p class="text-gray-300">
-                        بعد ای <a href="#download" class="text-blue-400 font-semibold hover:underline">بخش دانلود</a>، نرم افزار مناسب سیستم‌عامل خو  نصب کن
-                    </p>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-purple-400 to-violet-500 text-white text-4xl font-bold shadow-lg mb-4">3</div>
-                    <h3 class="text-xl font-bold mb-2">اضافه کردن سرورون</h3>
-                    <p class="text-gray-300">
-                        تو نرم افزار، ای قسمت اشتراک (Subscription)، لینکی کپی ابو وارد کن تا سرورون اضافه بهن
-                    </p>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 text-white text-4xl font-bold shadow-lg mb-4">4</div>
-                    <h3 class="text-xl font-bold mb-2">اتصال نهایی</h3>
-                    <p class="text-gray-300">
-                        یه سرور  انتخاب کن و دکمه اتصال  بزن . ای اینترنت آزاد لذت ببر!
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section id="faq" class="animated-section container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold mb-4 text-white">
-                    سوالات متداول
-                </h2>
-                <p class="text-gray-300 text-lg">پاسخ به پرسش‌ون رایج شما</p>
-            </div>
-            <div class="max-w-4xl mx-auto space-y-4" id="faq-container">
-                </div>
-        </section>
-
-        <section id="troubleshooting" class="animated-section container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold mb-4 bg-gradient-to-r from-red-500 via-orange-500 to-amber-500 bg-clip-text text-transparent">
-                    عیب‌یابی هوشمند
-                </h2>
-                <p class="text-gray-300 text-lg">مشکلات احتمالی و راه‌حل‌های سریع</p>
-            </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <div class="card-glass rounded-2xl p-6 text-center">
-                    <div class="w-16 h-16 bg-red-500 bg-opacity-20 text-red-400 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
-                        <i class="fa-solid fa-wifi-slash"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">وصل نمی‌شود؟</h3>
-                    <ul class="text-gray-300 space-y-3 text-right">
-                        <li class="flex items-start"><i class="fa-solid fa-cloud-arrow-down text-blue-400 ml-2 mt-1 w-5 text-center"></i>ابتدا لینک اشتراک را آپدیت کنید.</li>
-                        <li class="flex items-start"><i class="fa-solid fa-network-wired text-yellow-400 ml-2 mt-1 w-5 text-center"></i>اتصال اینترنت خود را چک کنید.</li>
-                        <li class="flex items-start"><i class="fa-solid fa-server text-purple-400 ml-2 mt-1 w-5 text-center"></i>یک سرور دیگر را امتحان کنید.</li>
-                    </ul>
-                </div>
-                <div class="card-glass rounded-2xl p-6 text-center">
-                    <div class="w-16 h-16 bg-orange-500 bg-opacity-20 text-orange-400 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
-                        <i class="fa-solid fa-gauge-simple-low"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">سرعت پایین است؟</h3>
-                    <ul class="text-gray-300 space-y-3 text-right">
-                        <li class="flex items-start"><i class="fa-solid fa-bolt text-yellow-400 ml-2 mt-1 w-5 text-center"></i>به بخش تست سرعت مراجعه کنید.</li>
-                        <li class="flex items-start"><i class="fa-solid fa-signal text-green-400 ml-2 mt-1 w-5 text-center"></i>به سروری با پینگ پایین‌تر متصل شوید.</li>
-                        <li class="flex items-start"><i class="fa-solid fa-window-close text-red-400 ml-2 mt-1 w-5 text-center"></i>برنامه‌های پرمصرف اینترنت را ببندید.</li>
-                    </ul>
-                </div>
-                <div class="card-glass rounded-2xl p-6 text-center">
-                    <div class="w-16 h-16 bg-blue-500 bg-opacity-20 text-blue-400 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">هنوز مشکل دارید؟</h3>
-                    <ul class="text-gray-300 space-y-3 text-right">
-                        <li class="flex items-start"><i class="fa-solid fa-arrow-up-from-bracket text-sky-400 ml-2 mt-1 w-5 text-center"></i>مطمئن شوید از آخرین نسخه کلاینت استفاده می‌کنید.</li>
-                        <li class="flex items-start"><i class="fa-solid fa-power-off text-red-400 ml-2 mt-1 w-5 text-center"></i>یک بار دستگاه خود را ری‌استارت کنید.</li>
-                        <li class="flex items-start"><i class="fa-solid fa-headset text-green-400 ml-2 mt-1 w-5 text-center"></i>با <a href="https://t.me/itsthemoein" class="text-blue-400 font-semibold">پشتیبانی</a> در ارتباط باشید.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
+            <p style="margin-top: 20px;">
+                © 1404 آزادی‌نت - ساخته شده با ❤️ برای مردم ایران
+            </p>
+        </footer>
     </div>
-    <footer class="pt-16 pb-8 relative overflow-hidden">
-        <div class="container mx-auto px-4 relative z-10">
-            <div class="text-center mb-10">
-                <h2 class="text-4xl font-bold mb-2 text-white">آزادی‌نت</h2>
-                <p class="text-blue-200">اینترنت آزاد برای همه، همیشه و همه‌جا</p>
-            </div>
-            <div class="border-t border-white border-opacity-20 pt-6 text-center text-blue-200 text-sm">
-                <button onclick="showAdminLogin()" class="text-sm text-blue-300 hover:underline">ورود به پنل مدیریت</button>
-                <p>
-                    © 1404 آزادی‌نت - ساخته شده با ❤️ برای مردم ایران
-                </p>
-            </div>
-        </div>
-    </footer>
 
-    <script>
-        const ADMIN_PASSWORD = 'moein'; 
-        const JSON_URL = 'data.json';
-        let exclusiveConfigs = {};
-        let dailyConfigLink = '';
-        let subLink = '';
-
-        document.addEventListener('DOMContentLoaded', function() {
-            if (!sessionStorage.getItem('azadiNetWelcomed')) {
-                document.getElementById('welcomeModal').classList.remove('hidden');
-            }
-            fetchConfigsAndInit();
-        });
-
-        async function fetchConfigsAndInit() {
-            try {
-                const response = await fetch(JSON_URL);
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch JSON: ${response.status} ${response.statusText}`);
-                }
-                const data = await response.json();
-                exclusiveConfigs = data.exclusiveConfigs;
-                dailyConfigLink = data.dailyConfigLink;
-                subLink = data.subLink;
-
-                const subLinkElement = document.getElementById('subLink');
-                if (subLinkElement) {
-                    subLinkElement.textContent = subLink;
-                }
-
-                updateServerStats();
-                buildFAQ();
-                getUserInfo();
-                
-                document.querySelectorAll('.ripple').forEach(item => {
-                    item.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const targetId = this.getAttribute('href').substring(1);
-                        const targetElement = document.getElementById(targetId);
-                        if (targetElement) {
-                            targetElement.scrollIntoView({ behavior: 'smooth' });
-                        }
-                    });
-                });
-
-            } catch (error) {
-                console.error("Error loading configs:", error);
-                showNotification('خطا در بارگذاری اطلاعات سایت. لطفاً بعداً دوباره امتحان کنید.', 'error');
-            }
-        }
-
-        function showAdminLogin() {
-            document.getElementById('adminPanelLogin').classList.remove('hidden');
-        }
-
-        function loginAdmin() {
-            const password = document.getElementById('adminPassword').value;
-            if (password === ADMIN_PASSWORD) {
-                document.getElementById('adminPanelLogin').classList.add('hidden');
-                document.getElementById('adminPanelContent').classList.remove('hidden');
-                loadConfigsToAdminPanel();
-            } else {
-                alert('رمز عبور اشتباه است!');
-            }
-        }
-
-        function logoutAdmin() {
-            document.getElementById('adminPanelLogin').classList.remove('hidden');
-            document.getElementById('adminPanelContent').classList.add('hidden');
-            document.getElementById('adminPassword').value = '';
-        }
-
-        function loadConfigsToAdminPanel() {
-            const form = document.getElementById('adminConfigForm');
-            const currentConfigsHtml = Object.keys(exclusiveConfigs).map(phone => {
-                const config = exclusiveConfigs[phone];
-                return `
-                    <div class="card-glass p-4 rounded-xl relative">
-                        <button onclick="removeConfigField(this)" class="absolute top-2 left-2 text-red-500 hover:text-red-700">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
-                        <label class="block text-gray-400 text-sm mb-1">شماره تماس</label>
-                        <input type="text" data-key="phone" value="${phone}" class="w-full bg-black bg-opacity-20 rounded-md p-2 mb-2 text-white font-mono text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
-                        <label class="block text-gray-400 text-sm mb-1">نام کاربر</label>
-                        <input type="text" data-key="name" value="${config.name}" class="w-full bg-black bg-opacity-20 rounded-md p-2 mb-2 text-white font-mono text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
-                        <label class="block text-gray-400 text-sm mb-1">لینک کانفیگ</label>
-                        <textarea data-key="config" class="w-full bg-black bg-opacity-20 rounded-md p-2 text-white font-mono text-sm h-24 focus:outline-none focus:ring-1 focus:ring-blue-500">${config.config}</textarea>
-                    </div>
-                `;
-            }).join('');
-            
-            form.innerHTML = `
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-bold text-gray-200">کانفیگ‌های اختصاصی</h3>
-                    <button onclick="logoutAdmin()" class="bg-red-500 text-white px-4 py-2 rounded-xl text-sm font-bold">خروج</button>
-                </div>
-                <div class="card-glass p-4 rounded-xl text-center">
-                    <button onclick="addConfigField()" class="bg-blue-500 text-white px-4 py-2 rounded-xl text-sm font-bold">
-                        <i class="fa-solid fa-plus ml-2"></i>افزودن کانفیگ جدید
-                    </button>
-                </div>
-                ${currentConfigsHtml}
-            `;
-        }
-        
-        function addConfigField() {
-            const form = document.getElementById('adminConfigForm');
-            const newFieldHtml = `
-                <div class="card-glass p-4 rounded-xl relative">
-                    <button onclick="removeConfigField(this)" class="absolute top-2 left-2 text-red-500 hover:text-red-700">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                    <label class="block text-gray-400 text-sm mb-1">شماره تماس</label>
-                    <input type="text" data-key="phone" placeholder="مثال: 09121234567" class="w-full bg-black bg-opacity-20 rounded-md p-2 mb-2 text-white font-mono text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
-                    <label class="block text-gray-400 text-sm mb-1">نام کاربر</label>
-                    <input type="text" data-key="name" placeholder="مثال: علی احمدی" class="w-full bg-black bg-opacity-20 rounded-md p-2 mb-2 text-white font-mono text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
-                    <label class="block text-gray-400 text-sm mb-1">لینک کانفیگ</label>
-                    <textarea data-key="config" placeholder="لینک VLESS, VMESS, Trojan" class="w-full bg-black bg-opacity-20 rounded-md p-2 text-white font-mono text-sm h-24 focus:outline-none focus:ring-1 focus:ring-blue-500"></textarea>
-                </div>
-            `;
-            const addButton = form.querySelector('.card-glass:last-child');
-            if (addButton) {
-                addButton.insertAdjacentHTML('afterend', newFieldHtml);
-            } else {
-                form.innerHTML += newFieldHtml;
-            }
-        }
-
-        function removeConfigField(button) {
-            button.closest('.card-glass').remove();
-        }
-
-        function saveConfigs() {
-            const form = document.getElementById('adminConfigForm');
-            const newExclusiveConfigs = {};
-            let isError = false;
-
-            const configItems = form.querySelectorAll('.card-glass');
-            configItems.forEach(item => {
-                const phone = item.querySelector('input[data-key="phone"]').value.trim();
-                const name = item.querySelector('input[data-key="name"]').value.trim();
-                const config = item.querySelector('textarea[data-key="config"]').value.trim();
-
-                if (phone && name && config) {
-                    newExclusiveConfigs[phone] = { name, config };
-                } else {
-                    isError = true;
-                }
-            });
-
-            if (isError) {
-                showNotification('لطفاً همه فیلدها را پر کنید.', 'error');
-            } else {
-                exclusiveConfigs = newExclusiveConfigs;
-                showNotification('تغییرات با موفقیت ذخیره شد! برای اعمال کامل، باید فایل data.json را به صورت دستی کپی و در آن فایل جایگزین کنید.', 'success');
-                loadConfigsToAdminPanel(); 
-            }
-        }
-
-        function checkSubscription() {
-            const phoneInput = document.getElementById('phoneInput').value.trim();
-            const resultDiv = document.getElementById('exclusiveConfigResult');
-            const userConfig = exclusiveConfigs[phoneInput];
-            
-            resultDiv.innerHTML = '';
-            resultDiv.classList.add('hidden');
-
-            if (userConfig) {
-                resultDiv.innerHTML = `
-                    <div class="mt-4 p-4 rounded-lg bg-green-500 bg-opacity-30 border border-green-500">
-                        <h4 class="font-bold text-green-300"><i class="fa-solid fa-check-circle ml-2"></i>شماره شما تایید شد!</h4>
-                        <p class="text-sm mt-2">کانفیگ اختصاصی برای **${userConfig.name}**:</p>
-                        <div class="bg-black bg-opacity-20 rounded-xl p-3 mt-4 flex items-center justify-between">
-                            <p id="exclusiveConfig" class="font-mono text-center text-white text-sm break-all">${userConfig.config}</p>
-                            <button onclick="copyToClipboard(document.getElementById('exclusiveConfig').textContent, '✅ کانفیگ اختصاصی کپی شد!')" class="mr-2 text-white bg-green-600 hover:bg-green-700 p-2 rounded-lg ripple transition">
-                                <i class="fa-solid fa-copy"></i>
-                            </button>
-                        </div>
-                    </div>`;
-                resultDiv.classList.remove('hidden');
-            } else {
-                resultDiv.innerHTML = `
-                    <div class="mt-4 p-4 rounded-lg bg-red-500 bg-opacity-30 border border-red-500">
-                        <h4 class="font-bold text-red-300"><i class="fa-solid fa-exclamation-triangle ml-2"></i>شماره تماس یافت نشد!</h4>
-                        <p class="text-sm mt-2">لطفاً شماره تماس را به درستی وارد کنید یا برای خرید اشتراک با پشتیبانی تماس بگیرید.</p>
-                    </div>`;
-                resultDiv.classList.remove('hidden');
-            }
-        }
-
-        function updateServerStats() {
-            const serviceStartDate = new Date('2023-01-01T00:00:00Z');
-            const totalDowntimeInSeconds = 2 * 3600; 
-            const now = new Date();
-            const totalTimeInSeconds = (now - serviceStartDate) / 1000;
-            const totalUptimeInSeconds = totalTimeInSeconds - totalDowntimeInSeconds;
-            const uptimePercentage = (totalUptimeInSeconds / totalTimeInSeconds) * 100;
-            document.getElementById('uptime').textContent = uptimePercentage.toFixed(4);
-
-            const basePing = 45;
-            const fluctuation = (Math.random() - 0.5) * 20;
-            const currentPing = Math.round(basePing + fluctuation);
-            document.getElementById('serverPing').textContent = currentPing + 'ms';
-        }
-        
-        async function copyToClipboard(text, message) {
-            try {
-                await navigator.clipboard.writeText(text);
-                showNotification(message, 'success');
-            } catch (err) {
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                textArea.style.position = 'fixed';
-                textArea.style.opacity = '0';
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    showNotification(message, 'success');
-                } catch (err) {
-                    showNotification('خطا در کپی کردن!', 'error');
-                }
-                document.body.removeChild(textArea);
-            }
-        }
-
-        function copyDailyConfig() {
-            copyToClipboard(dailyConfigLink, '✅ کانفیگ روز با موفقیت کپی شد!');
-        }
-
-        function closeWelcome() {
-            sessionStorage.setItem('azadiNetWelcomed', 'true');
-            const modal = document.getElementById('welcomeModal');
-            modal.style.transition = 'opacity 0.3s ease';
-            modal.style.opacity = '0';
-            setTimeout(() => modal.classList.add('hidden'), 300);
-        }
-
-        function showNotification(message, type = 'success') {
-            const existing = document.querySelector('.notification-toast');
-            if(existing) existing.remove();
-
-            const notification = document.createElement('div');
-            const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
-            const icon = type === 'success' ? '<i class="fa-solid fa-check-circle"></i>' : '<i class="fa-solid fa-times-circle"></i>';
-            
-            notification.className = `notification-toast fixed bottom-5 right-5 md:bottom-auto md:top-5 ${bgColor} text-white px-5 py-3 rounded-xl shadow-lg z-50 flex items-center space-x-3 space-x-reverse animate-fade-in`;
-            notification.innerHTML = `<span class="text-xl">${icon}</span> <span class="font-medium">${message}</span>`;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                notification.style.opacity = '0';
-                notification.style.transform = 'translateX(100%)';
-                setTimeout(() => notification.remove(), 500);
-            }, 3000);
-        }
-    </script>
 </body>
 </html>
